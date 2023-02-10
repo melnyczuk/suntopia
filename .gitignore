@@ -1,0 +1,16 @@
+node_modules/
+yarn-error.log
+build
+.DS_Store
+
+# assets
+*.jpg
+*.png
+*.mp4
+*.obj
+*.mtl
+
+localhost.crt
+localhost.key
+
+.next
