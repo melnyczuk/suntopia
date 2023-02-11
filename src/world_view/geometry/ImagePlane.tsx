@@ -1,10 +1,7 @@
-import React, { FC, forwardRef, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import {
   DoubleSide,
-  Material,
   Mesh,
-  MeshBasicMaterial,
-  PlaneGeometry,
   Texture,
   TextureLoader,
   Vector2,
@@ -26,19 +23,24 @@ const ImagePlane: FC<ImagePlaneProps> = ({
   setProjectItem,
 }) => {
   const ref = useRef<Mesh>();
-  const [texture, setTexture] = useState<Texture>();
+  const [texture, setTexture] = useState<Texture | null>(null);
 
   useEffect(() => {
-    new TextureLoader().loadAsync(projectItem.image).then(setTexture);
-  }, [projectItem]);
+    new TextureLoader().load(projectItem.image, setTexture);
+  }, [projectItem.image]);
 
   useEffect(() => {
-    ref.current.position.set(position.x, position.y, position.z);
-    ref.current.lookAt(new Vector3(0, 0, 0));
-  }, [ref.current, position]);
+    if (texture && ref.current) {
+      ref.current.lookAt(0, 0, 0);
+    }
+  }, [ref, ref.current, texture]);
 
-  return (
-    <mesh ref={ref} onClick={() => setProjectItem(projectItem)}>
+  return !texture ? null : (
+    <mesh
+      ref={ref}
+      position={[position.x, position.y, position.z]}
+      onClick={() => setProjectItem(projectItem)}
+    >
       <planeGeometry args={[dimensions.x, dimensions.y]} />
       <meshBasicMaterial
         map={texture}

@@ -36,7 +36,7 @@ const WorldView: FC<WorldViewProps> = ({ projectItems, setProjectItem }) => {
     <>
       {projectItems.map((projectItem, i) => (
         <ImagePlane
-          key={projectItem.title}
+          key={`${i}-${projectItem.title}`}
           dimensions={new Vector2(15, 10)}
           position={positions[i]}
           projectItem={projectItem}
