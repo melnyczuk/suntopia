@@ -9,3 +9,8 @@ export type ProjectItem = {
   text: string;
   assets: MediaAsset[];
 };
+
+export type InfoJson = {
+  info: ProjectItem;
+  items: ProjectItem[];
+};

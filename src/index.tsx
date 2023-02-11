@@ -1,37 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-// import { FPSControls } from 'react-three-fpscontrols';
 
-import { fetchItems, fetchText } from './api';
+import { fetchData, fetchText } from './api';
 import WorldView from './world_view';
-import { InfoButton, TextBox } from './overlay';
-
-import { ProjectItem } from './types';
+import { Overlay } from './overlay';
+import { InfoJson, ProjectItem } from './types';
 
 const INFO_URL = 'https://dl.dropbox.com/s/325pclzws7xdeem/index.json';
 
-const info: ProjectItem = {
-  title: 'Sun',
-  text: 'Sun sun sun',
+const fallbackInfo: ProjectItem = {
+  title: '🌞',
+  text: '',
   image: '',
   assets: [],
 };
 
 const App = () => {
+  const [info, setInfo] = useState<InfoJson['info']>(fallbackInfo);
   const [target, setTarget] = useState<ProjectItem | null>(info);
   const [projectItems, setProjectItems] = useState<ProjectItem[]>([]);
 
   useEffect(() => {
-    fetchItems(INFO_URL).then(async (rawItems) => {
+    fetchData(INFO_URL).then(async ({ info: rawInfo, items: rawItems }) => {
+      setInfo(rawInfo);
+      setTarget(rawInfo);
       const enrichedItems = await Promise.all(
-        rawItems.map(async ({ title, image, text, assets }) => ({
-          title,
-          image,
-          text: await fetchText(text),
-          assets,
-        }))
+        rawItems.map(async ({ title, image, text: rawText, assets }) => {
+          const text = await fetchText(rawText);
+          return { title, image, text, assets };
+        })
       );
-      console.log('items', enrichedItems);
       setProjectItems(enrichedItems);
     });
   }, []);
@@ -49,17 +47,7 @@ const App = () => {
           <WorldView projectItems={projectItems} setProjectItem={setTarget} />
         </Canvas>
       )}
-      <InfoButton
-        onClick={() => {
-          setTarget(info);
-        }}
-      />
-      {target && (
-        <TextBox>
-          <h2>{target.title}</h2>
-          <p>{target.text}</p>
-        </TextBox>
-      )}
+      <Overlay projectItem={target} onInfoClick={() => setTarget(info)} />
     </div>
   );
 };

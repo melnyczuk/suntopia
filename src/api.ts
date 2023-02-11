@@ -1,10 +1,9 @@
-import { ProjectItem } from './types';
+import { InfoJson } from './types';
 
-export async function fetchItems(url: string): Promise<ProjectItem[]> {
+export async function fetchData(url: string): Promise<InfoJson> {
   const response = await fetch(url);
   const infoJsonString = await response.text();
-  const { items } = JSON.parse(infoJsonString);
-  return items;
+  return JSON.parse(infoJsonString);
 }
 
 export async function fetchText(url: string): Promise<string> {
