@@ -25,7 +25,7 @@ const App = () => {
       setInfo(rawInfo);
       setTarget(rawInfo);
       const enrichedItems = await Promise.all(
-        rawItems.map(async ({ title, image, text: rawText, assets }) => {
+        rawItems.map(async ({ title, image, text: rawText, assets = [] }) => {
           const text = await fetchText(rawText);
           return { title, image, text, assets };
         })

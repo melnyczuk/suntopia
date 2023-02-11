@@ -16,6 +16,29 @@ const Overlay: FC<OverlayProps> = ({ projectItem, onInfoClick }) => {
       {projectItem && (
         <TextBox>
           <h2>{projectItem.title}</h2>
+          {(projectItem.assets || []).map(({ type, src }) => {
+            if (type === 'VIDEO') {
+              return (
+                <a href={src} target="_blank">
+                  watch the video
+                </a>
+              );
+              // return (
+              // <video
+              //   key={src}
+              //   className={styles.video}
+              //   playsInline
+              //   preload="auto"
+              //   controls
+              //   src={src}
+              // />
+              // );
+            }
+            if (type === 'IMAGE') {
+              return <img key={src} className={styles.image} src={src} />;
+            }
+            return null;
+          })}
           {projectItem.text.split('\n').map((line, i) => (
             <p key={`${i}-${line.slice(0, 10).replace(' ', '')}`}>{line}</p>
           ))}

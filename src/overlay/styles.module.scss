@@ -30,7 +30,6 @@ $color: darkslategray;
   pointer-events: none;
 }
 
-
 .info-button {
   font-family: $font-family;
 
@@ -79,4 +78,14 @@ $color: darkslategray;
 
 .text-box > p {
   text-align: left;
+}
+
+.video {
+  background-color: initial;
+  opacity: 1.0;
+}
+
+.image {
+  background-color: initial;
+  opacity: 1.0;
 }
