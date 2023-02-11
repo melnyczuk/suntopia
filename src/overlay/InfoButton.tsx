@@ -14,7 +14,7 @@ const InfoButton = ({ onClick }: InfoButtonProps) => {
         onClick();
       }}
     >
-      Info
+      info
     </button>
   );
 };

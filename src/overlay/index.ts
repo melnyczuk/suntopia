@@ -1,2 +1,1 @@
-export { default as InfoButton } from './InfoButton';
-export { default as TextBox } from './TextBox';
+export { default as Overlay } from './Overlay';
